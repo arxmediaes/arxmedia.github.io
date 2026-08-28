@@ -611,6 +611,174 @@
             });
         });
     </script>
+<!-- ========================================== -->
+<!-- CALCULADORA DE AHORRO DE TIEMPO - ARX MEDIA -->
+<!-- ========================================== -->
+<section class="arx-calc-section" id="calculadora">
+  <div class="arx-calc-box">
+    <h2>Calculadora de Ahorro de Tiempo</h2>
+    <p class="arx-calc-subtitle">Descubre cuántas horas al mes puedes recuperar delegando la producción audiovisual de tus inmuebles en ARX Media.</p>
+
+    <div class="arx-calc-grid">
+      <!-- Controles / Sliders -->
+      <div class="arx-calc-inputs">
+        <div class="arx-input-group">
+          <div class="arx-label-row">
+            <label for="input-inmuebles">Propiedades / Proyectos al mes:</label>
+            <span id="val-inmuebles" class="arx-badge">5</span>
+          </div>
+          <input type="range" id="input-inmuebles" min="1" max="30" value="5">
+        </div>
+
+        <div class="arx-input-group">
+          <div class="arx-label-row">
+            <label for="input-horas">Horas invertidas en foto/vídeo/edición por inmueble:</label>
+            <span id="val-horas" class="arx-badge">6 h</span>
+          </div>
+          <input type="range" id="input-horas" min="1" max="20" value="6">
+        </div>
+      </div>
+
+      <!-- Resultados -->
+      <div class="arx-calc-results">
+        <div class="arx-result-card">
+          <span class="arx-result-number" id="res-mes">30</span>
+          <span class="arx-result-label">Horas ahorradas al mes</span>
+        </div>
+        <div class="arx-result-card arx-highlight">
+          <span class="arx-result-number" id="res-ano">360</span>
+          <span class="arx-result-label">Horas recuperadas al año</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .arx-calc-section {
+    padding: 60px 20px;
+    background-color: #0d0d0d;
+    color: #ffffff;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  .arx-calc-box {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #161618;
+    border: 1px solid #2a2a2e;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+  .arx-calc-box h2 {
+    margin: 0 0 10px 0;
+    font-size: 1.8rem;
+    text-align: center;
+  }
+  .arx-calc-subtitle {
+    text-align: center;
+    color: #a1a1aa;
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+  }
+  .arx-calc-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  @media (min-width: 768px) {
+    .arx-calc-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .arx-input-group {
+    margin-bottom: 24px;
+  }
+  .arx-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: #e4e4e7;
+  }
+  .arx-badge {
+    background: #27272a;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    color: #ffffff;
+    border: 1px solid #3f3f46;
+  }
+  .arx-input-group input[type="range"] {
+    width: 100%;
+    accent-color: #dc2743;
+    cursor: pointer;
+  }
+  .arx-calc-results {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    justify-content: center;
+  }
+  .arx-result-card {
+    background: #202024;
+    border: 1px solid #2e2e33;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+  }
+  .arx-result-card.arx-highlight {
+    background: linear-gradient(135deg, rgba(220, 39, 67, 0.15) 0%, rgba(188, 24, 136, 0.15) 100%);
+    border: 1px solid rgba(220, 39, 67, 0.4);
+  }
+  .arx-result-number {
+    display: block;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 4px;
+  }
+  .arx-result-card.arx-highlight .arx-result-number {
+    color: #f43f5e;
+  }
+  .arx-result-label {
+    font-size: 0.85rem;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+</style>
+
+<script>
+  (function() {
+    const inputInmuebles = document.getElementById('input-inmuebles');
+    const inputHoras = document.getElementById('input-horas');
+    const valInmuebles = document.getElementById('val-inmuebles');
+    const valHoras = document.getElementById('val-horas');
+    const resMes = document.getElementById('res-mes');
+    const resAno = document.getElementById('res-ano');
+
+    function calcularAhorro() {
+      const inmuebles = parseInt(inputInmuebles.value, 10);
+      const horas = parseInt(inputHoras.value, 10);
+
+      const totalMes = inmuebles * horas;
+      const totalAno = totalMes * 12;
+
+      valInmuebles.textContent = inmuebles;
+      valHoras.textContent = horas + ' h';
+      resMes.textContent = totalMes;
+      resAno.textContent = totalAno;
+    }
+
+    if (inputInmuebles && inputHoras) {
+      inputInmuebles.addEventListener('input', calcularAhorro);
+      inputHoras.addEventListener('input', calcularAhorro);
+    }
+  })();
+</script>
+<!-- FIN CALCULADORA -->
 </body>
 </html>
 
