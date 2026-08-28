@@ -362,6 +362,59 @@
                 width: 100%;
             }
         }
+        /* FAQ Accordion Styles */
+        .faq-section {
+            padding: 80px 0;
+            border-top: 1px solid var(--card-border);
+        }
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
+        .faq-item:hover {
+            border-color: var(--card-hover-border);
+        }
+        .faq-question {
+            padding: 20px 24px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-main);
+            user-select: none;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 24px;
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            line-height: 1.6;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding: 0 24px 20px 24px;
+        }
+        .faq-icon {
+            font-size: 1.4rem;
+            transition: transform 0.3s ease;
+            color: var(--accent-cyan);
+            font-weight: 400;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
     </style>
 </head>
 <body>
@@ -454,6 +507,44 @@
     </section>
 
     <!-- Final CTA -->
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Preguntas Frecuentes</h2>
+                <p>Todo lo que necesitas saber antes de optimizar tu negocio con nosotros.</p>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>¿Cuánto tiempo se tarda en implementar una automatización?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Los proyectos rápidos ("Quick Wins") suelen estar operativos en 48 a 72 horas. Integraciones complejas con CRM, agentes de IA o bases de datos personalizadas toman entre 1 y 2 semanas.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>¿Necesito cambiar los programas o software que ya uso?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        No. Nos conectamos a tus herramientas actuales (Google Workspace, WhatsApp, Gmail, Notion, CRM, etc.) mediante API y flujos webhooks sin interrumpir la operación de tu equipo.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>¿Qué tipo de proyectos audiovisuales realizan?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Desarrollamos contenido corporativo de alto impacto: reels para redes, fotografía de instalaciones/producto y videos promocionales pensados para transmitir solvencia visual.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <section class="cta-final">
         <div class="container">
             <div class="cta-card">
@@ -512,6 +603,14 @@
 
 </body>
 </html>
+<script>
+        document.querySelectorAll('.faq-question').forEach(item => {
+            item.addEventListener('click', () => {
+                const parent = item.parentElement;
+                parent.classList.toggle('active');
+            });
+        });
+    </script>
 </body>
 </html>
 
