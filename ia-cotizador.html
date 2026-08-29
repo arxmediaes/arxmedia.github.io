@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Impacto & Automatización IA</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --accent: #10b981;
+            --bg-dark: #090d16;
+            --bg-card: #111827;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --border: #1f2937;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: var(--bg-card);
+            max-width: 750px;
+            width: 100%;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            border: 1px solid var(--border);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .step-section {
+            margin-bottom: 2rem;
+        }
+
+        .step-title {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .step-title span {
+            background-color: var(--primary);
+            color: white;
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        /* Opciones de selección rápida (Cards) */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .card-option {
+            background-color: rgba(31, 41, 55, 0.4);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 1.2rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: left;
+        }
+
+        .card-option:hover {
+            border-color: var(--primary);
+            background-color: rgba(99, 102, 241, 0.05);
+        }
+
+        .card-option.selected {
+            border-color: var(--primary);
+            background-color: rgba(99, 102, 241, 0.15);
+        }
+
+        .card-option strong {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+            color: var(--text-main);
+        }
+
+        .card-option span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Sliders de volumen */
+        .slider-group {
+            background-color: rgba(31, 41, 55, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .slider-container {
+            margin-top: 1rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .slider-header span:last-child {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Panel de Resultados Dinámicos (Efecto WOW) */
+        .results-panel {
+            margin-top: 2.5rem;
+            background: linear-gradient(145deg, #0f172a 0%, #1e1b4b 100%);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metric-box p {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 0.3rem;
+        }
+
+        .metric-box h3 {
+            font-size: 1.6rem;
+            color: var(--accent);
+        }
+
+        .metric-box.price h3 {
+            color: var(--primary);
+        }
+
+        .lead-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+        }
+
+        .lead-form input {
+            padding: 0.9rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        .lead-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-action:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 600px) {
+            .metrics-grid { grid-template-columns: 1fr; }
+            .container { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Simulador de Impacto IA</h1>
+            <p>Descubre cuántas horas y costes ahorras automatizando tu negocio con Inteligencia Artificial.</p>
+        </div>
+
+        <!-- Paso 1: Seleccionar el cuello de botella -->
+        <div class="step-section">
+            <div class="step-title"><span>1</span> ¿Cuál es tu mayor cuello de botella actual?</div>
+            <div class="cards-grid" id="bottleneckGroup">
+                <div class="card-option selected" data-value="leads" data-base="800">
+                    <strong>Captación de Leads</strong>
+                    <span>Demora en responder clientes web o redes.</span>
+                </div>
+                <div class="card-option" data-value="calls" data-base="1400">
+                    <strong>Atención Telefónica</strong>
+                    <span>Llamadas perdidas y citas manuales.</span>
+                </div>
+                <div class="card-option" data-value="internal" data-base="1100">
+                    <strong>Procesos Internos</strong>
+                    <span>Tareas repetitivas entre Excel, correos y CRM.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paso 2: Deslizador de Volumen -->
+        <div class="step-section">
+            <div class="step-title"><span>2</span> ¿Qué volumen de operaciones manejas al mes?</div>
+            <div class="slider-group">
+                <div class="slider-header">
+                    <span id="sliderLabel">Interacciones / Consultas mensuales:</span>
+                    <span id="sliderValue">300 leads/mes</span>
+                </div>
+                <div class="slider-container">
+                    <input type="range" id="volumeSlider" min="50" max="2000" step="50" value="300">
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel de Resultados (Efecto Dinámico en Vivo) -->
+        <div class="results-panel">
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <p>Tiempo ahorrado estimado</p>
+                    <h3 id="hoursSaved">45 horas / mes</h3>
+                </div>
+                <div class="metric-box price">
+                    <p>Inversión Estimada del Sistema</p>
+                    <h3 id="priceDisplay">1.200€</h3>
+                </div>
+            </div>
+
+            <form class="lead-form" id="simForm">
+                <input type="email" id="userEmail" placeholder="Tu email corporativo para recibir el plano técnico" required>
+                <button type="submit" class="btn-action" id="submitBtn">Desplegar Arquitectura y Propuesta</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card-option');
+            const slider = document.getElementById('volumeSlider');
+            const sliderValue = document.getElementById('sliderValue');
+            const hoursSaved = document.getElementById('hoursSaved');
+            const priceDisplay = document.getElementById('priceDisplay');
+            const form = document.getElementById('simForm');
+            const submitBtn = document.getElementById('submitBtn');
+
+            let selectedBasePrice = 800; // Valor inicial por defecto
+
+            // Lógica para seleccionar las tarjetas de cuello de botella
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    cards.forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selectedBasePrice = parseInt(card.getAttribute('data-base'));
+                    updateCalculations();
+                });
+            });
+
+            // Lógica del slider de volumen
+            slider.addEventListener('input', (e) => {
+                const val = e.target.value;
+                sliderValue.textContent = `${val} interacciones/mes`;
+                updateCalculations();
+            });
+
+            // Función matemática para actualizar en tiempo real
+            function updateCalculations() {
+                const volume = parseInt(slider.value);
+                
+                // Cálculo estimado de horas ahorradas (aprox 15% del volumen en horas de trabajo manual)
+                const calculatedHours = Math.round(volume * 0.15);
+                hoursSaved.textContent = `${calculatedHours} horas / mes`;
+
+                // Cálculo dinámico de la inversión basado en la complejidad y volumen
+                const volumeMultiplier = 1 + (volume / 2000);
+                const finalPrice = Math.round(selectedBasePrice * volumeMultiplier);
+                
+                const formatter = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+                priceDisplay.textContent = formatter.format(finalPrice);
+            }
+
+            // Simulación de envío
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('userEmail').value;
+                if(email) {
+                    submitBtn.textContent = "Generando esquema de IA...";
+                    submitBtn.style.background = "#4f46e5";
+                    
+                    setTimeout(() => {
+                        submitBtn.textContent = "¡Plano técnico enviado con éxito!";
+                        submitBtn.style.background = "#10b981";
+                    }, 1500);
+                }
+            });
+
+            // Inicializar valores
+            updateCalculations();
+        });
+    </script>
+</body>
+</html>
